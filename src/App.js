@@ -1,8 +1,12 @@
 import {HashRouter, Routes, Route} from 'react-router-dom';
-import './components/style.css'
+// import './components/style.css'
 import Navbar from './components/Navbar';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import { Home , Notes , PYQs, Books, Help, Contribute} from './components/Navcomponents';
+import Home from './pages/Home';
+import Books from './pages/Books';
+import Help from './pages/Help';
+import Notes from './pages/Notes';
+import PYQs from './pages/PYQs';
 
 function App() {
   return (
@@ -14,8 +18,8 @@ function App() {
           <Route path="/Notes" element={<Notes/>} />
           <Route path="/PYQs" element={<PYQs/>} />
           <Route path="/Books" element={<Books/>} />
-          <Route path="/Help" element={<Help/>} />
-          <Route path="/Contribute" element={<Contribute/>} />
+          <Route path="/Contribute" element={<Help/>} />
+          {/* <Route path="/Contribute" element={<Contribute/>} /> */}
         </Routes>
       </HashRouter>
     </div>

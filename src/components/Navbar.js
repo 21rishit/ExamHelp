@@ -34,12 +34,12 @@ function Navbar() {
                             <li className="nav-item">
                                 <Link to="/Books" className="nav-link"><i className="bi bi-upload d-none d-md-inline"></i>Books</Link>
                             </li>
-                            <li className="nav-item">
+                            {/* <li className="nav-item">
                                 <Link to="/Help" className="nav-link"><i className="bi bi-telephone-inbound-fill d-none d-md-inline"></i>Help</Link>
                             </li>
                             <li className="nav-item d-md-none">
                                 <Link to="/Contribute" className="nav-link"><i className="bi bi-person-workspace d-none d-md-inline"></i>Contribute Us</Link>
-                            </li>
+                            </li> */}
                             <li className="nav-item ms-2 mt-1 d-none d-md-inline ">
                                 <Link to="/Contribute" className="btn btn-md btn-warning fw-bold"><i className="bi bi-person-workspace d-none d-md-inline"></i>Contribute Us</Link>
                             </li>
