@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import User from "../models/user.js";
+import User from "../models/userModel.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -39,7 +39,6 @@ export const registerUser = async (req, res) => {
   }
 };
 
-
 // Login a user
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -70,5 +69,3 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: "Error logging in.", error: err });
   }
 };
-
-

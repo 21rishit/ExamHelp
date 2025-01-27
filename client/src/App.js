@@ -10,8 +10,14 @@ import PYQs from './pages/PYQs';
 import Login from './components/Login';
 import Register from './components/Register';
 import ProtectedPage from './components/ProtectedPage';
+import { useEffect } from 'react';
+
 
 function App() {
+  const token = localStorage.getItem("authToken");
+  useEffect(() => {
+    // api call agar toekn hai toh, check its validity, if yes, ok, if not, remove, username remove
+  })
   return (
     <div>
       <Router>

@@ -25,6 +25,11 @@ const userSchema = new mongoose.Schema({
 //   profileImage: { 
 //     type: String 
 // },
+// token:{
+//   type:String
+// },
+
+  // collegeName, profileImage, fullName, email, password, 
 });
 
 const User = mongoose.model("User", userSchema);

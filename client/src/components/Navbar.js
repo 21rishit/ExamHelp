@@ -9,14 +9,18 @@ function Navbar() {
   const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("User"); // For dynamic user greeting
+  const token = localStorage.getItem("authToken");
+  const storedUserName = localStorage.getItem("userName");
 
   useEffect(() => {
     // Check if user is logged in by verifying the presence of a token in localStorage
-    const token = localStorage.getItem("authToken");
-    const storedUserName = localStorage.getItem("userName");
-    setIsLoggedIn(!!token); // Update login status
-    setUserName(storedUserName || "User"); // Update user name
-  }, []); // Runs once when the component mounts
+    // const token = localStorage.getItem("authToken");
+    // const storedUserName = localStorage.getItem("userName");
+    // setIsLoggedIn(!!token); // Update login status
+    // setUserName(storedUserName || "User"); // Update user name
+
+    setIsLoggedIn(!token ? false : true); // Update login status
+  }, [token]); // Runs once when the component mounts
 
   const handleSearch = (e) => {
     e.preventDefault();

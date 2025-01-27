@@ -38,8 +38,7 @@ const Login = () => {
       // Optionally, store the token in localStorage (for authenticated sessions)
       localStorage.setItem("authToken", response.data.token);
       localStorage.setItem("userName", response.data.username);
-      navigate ("/")
-
+      navigate("/")
     } catch (error) {
       // Handle errors (invalid credentials, server errors, etc.)
       if (error.response && error.response.data) {

@@ -1,5 +1,5 @@
 import express from "express";
-import { upload } from "../middlewares/multer.js";
+import { upload } from "../middlewares/multerMiddleware.js";
 import { createBooks, fetchAllBooks } from "../controllers/booksController.js";
 
 const booksRouter = express.Router();
