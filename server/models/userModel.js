@@ -1,36 +1,29 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
-//   name: {
-//     type: String,
-//     required: true,
-//   },
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  email: { type: String, 
-    required: true, 
-    unique: true 
-},
-  password: { 
-    type: String, 
-    required: true 
-},
-//   collegeName: { 
-//     type: String, 
-//     required: true 
-// },
-//   profileImage: { 
-//     type: String 
-// },
-// token:{
-//   type:String
-// },
+const phoneRegex = /^[0-9]{10}$/; // Ensures exactly 10 digits
 
-  // collegeName, profileImage, fullName, email, password, 
-});
+const userSchema = new mongoose.Schema(
+  {
+    username: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
+    college: { type: String, required: true },
+    profileImage: { type: String, default: "" },
+    password: { type: String, required: true },
+    token: { type: String },
+    phone: {
+      type: String,
+      match: [phoneRegex, "Phone number must be exactly 10 digits."],
+      required: false, // Change to true if the phone number is mandatory
+    },
+    contributions: {
+      notes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Note" }],
+      books: [{ type: mongoose.Schema.Types.ObjectId, ref: "Book" }],
+      pyqs: [{ type: mongoose.Schema.Types.ObjectId, ref: "PYQ" }],
+    },
+  },
+  { timestamps: true }
+);
 
 const User = mongoose.model("User", userSchema);
 

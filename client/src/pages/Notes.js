@@ -30,7 +30,7 @@ const Notes = () => {
       "courseTitle",
       "courseCode",
       "facultyName",
-      "academicYear",
+      "year",
       "contributor",
     ].some((key) =>
       note[key]?.toString().toLowerCase().includes(searchQuery.toLowerCase())
@@ -70,7 +70,7 @@ const Notes = () => {
                   courseTitle={note.courseTitle}
                   courseCode={note.courseCode}
                   facultyName={note.facultyName}
-                  academicYear={note.academicYear}
+                  year={note.year}
                   contributor={note.contributor}
                   link={note.link}
                 />

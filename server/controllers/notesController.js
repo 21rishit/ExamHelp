@@ -1,20 +1,26 @@
 import { Notes } from "../models/notesModel.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import User from "../models/userModel.js";
 
 const createNotes = async (req, res) => {
     try {
-        console.log(req.body);
-        console.log(req.file);
+      console.log("req.file:", req.file);
+      console.log("req.body:", req.body);
         
         // Destructuring
-        const { contributor, courseTitle, courseCode, facultyName, academicYear } = req.body
+        const {contributor, courseTitle, courseCode, facultyName, year } = req.body
 
-        if (!contributor || !courseTitle || !courseCode || !facultyName || !academicYear ) {
+        if (!courseTitle || !courseCode || !facultyName || !year ) {
             return res.status(400).send({ message: "one or more fields missing!" });
         }
 
         // Upload the new notes file to Cloudinary
         const file = req.file;
+        if(!file) {
+            return res.status(400).send({ message: "File is required!" });
+        }
+
+        // Upload the new notes file to Cloudinary
         console.log(file);
         const fileUpload = await uploadOnCloudinary(file.path);
         const url = fileUpload.url;
@@ -22,17 +28,21 @@ const createNotes = async (req, res) => {
         console.log(url);
 
         const newNotes = {
-            contributor: contributor,
+            contributor,
             courseTitle: courseTitle,
             courseCode: courseCode,
             facultyName: facultyName,
-            academicYear: academicYear,
+            year: year,
             link: url,
         };
 
-        const notes = await Notes.create(newNotes);
-        console.log(notes);
-        return res.status(201).send(notes);
+        const note = await Notes.create(newNotes);
+        console.log(note);
+        const user = await User.findById(contributor);
+        console.log(user);
+        user.contributions.notes.push(note._id);
+        await user.save();
+        return res.status(201).send(note);
     } catch (error) {
         console.log(error.message);
         res.status(500).send(error.message);

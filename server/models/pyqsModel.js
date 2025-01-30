@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 const pyqsSchema = mongoose.Schema(
   {
+    contributor: {
+      type: mongoose.Schema.Types.ObjectId, // Reference to User model
+      ref: "User", // Links to the User collection
+      required: true,
+    },
     courseTitle: {
       type: String,
       required: true,
@@ -24,7 +29,7 @@ const pyqsSchema = mongoose.Schema(
     },
     link: {
       type: String,
-      // required: true,
+      required: true,
     },
   },
   {
@@ -32,4 +37,4 @@ const pyqsSchema = mongoose.Schema(
   }
 );
 
-export const PYQs = mongoose.model('PYQs', pyqsSchema);
+export const PYQs = mongoose.model("PYQs", pyqsSchema);

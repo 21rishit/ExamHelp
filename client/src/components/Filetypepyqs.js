@@ -31,6 +31,7 @@ const Filetypepyqs = () => {
     data.append('term', formData.term);
     data.append('academicYear', formData.academicYear);
     data.append('file', formData.file);
+    data.append('contributor', localStorage.getItem('userId'));
 
     try {
       const response = await fetch('http://localhost:5000/pyqs/upload', {

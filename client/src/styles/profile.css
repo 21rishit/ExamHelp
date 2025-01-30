@@ -1,0 +1,38 @@
+.profile-container {
+  margin-top: 80px; /* Push content below navbar */
+}
+
+.profile-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #6c757d;
+}
+
+.tabs-container .nav-pills .nav-link {
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 20px;
+}
+
+.contributions-list {
+  margin-top: 20px;
+}
+
+.contribution-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+  text-align: center;
+}
+

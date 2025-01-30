@@ -1,26 +1,12 @@
 import { PYQs } from "../models/pyqsModel.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import User from "../models/userModel.js";
 
 const createPYQs = async (req, res) => {
   try {
-    // console.log(req.body);
-    // console.log(req.file);
-
-    // Form fill pysq
-    // Db store - Post route
-    // url - /pyq/upload
-    // middleware???? - multer (local file upload/storage)
-
-    // Algorithm
-    // destructure according to model
-    // check for null values
-    // file upload to cloud
-    // get the url
-    // create an ibject according to model schema
-    // saVE
-
+    
     // Destructuring
-    const { courseTitle, courseCode, facultyName, term, academicYear } =
+    const { courseTitle, courseCode, facultyName, term, academicYear, contributor } =
       req.body;
 
     if (!courseTitle || !courseCode || !facultyName || !term || !academicYear) {
@@ -42,10 +28,15 @@ const createPYQs = async (req, res) => {
       term: term,
       academicYear: academicYear,
       link: url,
+      contributor: contributor, 
     };
 
     const pyq = await PYQs.create(newPYQs);
     console.log(pyq);
+    const user = await User.findById(contributor);
+    console.log(user);
+    user.contributions.pyqs.push(pyq._id);
+    await user.save();
     return res.status(201).send(pyq);
   } catch (error) {
     console.log(error.message);

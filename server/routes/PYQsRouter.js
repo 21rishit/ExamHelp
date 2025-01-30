@@ -1,5 +1,5 @@
 import express from "express";
-import { upload } from "../middlewares/multer.js";
+import { upload } from "../middlewares/multerMiddleware.js";
 import { createPYQs, fetchAllPYQs } from "../controllers/pyqsController.js";
 
 const pyqsRouter = express.Router();

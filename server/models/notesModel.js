@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const notesSchema = mongoose.Schema(
   {
     contributor: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId, // Reference to User model
+      ref: "User", // Links to the User collection
       required: true,
     },
     courseTitle: {
@@ -18,7 +19,7 @@ const notesSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    academicYear: {
+    year: {
       type: Number,
       required: true,
     },
@@ -32,4 +33,4 @@ const notesSchema = mongoose.Schema(
   }
 );
 
-export const Notes = mongoose.model('Notes', notesSchema);
+export const Notes = mongoose.model("Notes", notesSchema);

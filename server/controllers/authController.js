@@ -2,44 +2,201 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 import dotenv from "dotenv";
+import { upload } from "../middlewares/multerMiddleware.js"; // Import multer middleware
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { v2 as cloudinary } from "cloudinary";
+
+import {Notes} from "../models/notesModel.js";
+import {Books} from "../models/booksModel.js"; 
+import {PYQs} from "../models/pyqsModel.js";
 
 dotenv.config();
 
-// Register a new user
-export const registerUser = async (req, res) => {
-  const { username, email, password } = req.body;
-
+export const checkAvailability = async (req, res) => {
   try {
-    // Validate input
-    if (!username || !email || !password) {
-      return res.status(400).json({ message: "All fields are required." });
+    const { username, email } = req.body;
+
+    if (!username && !email) {
+      return res.status(400).json({ message: "Please provide username or email." });
     }
 
-    // Check for existing email
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "Email already in use." });
-    }
-
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create and save the user
-    const newUser = new User({
-      username,
-      email,
-      password: hashedPassword,
+    // Check if username or email exists
+    const existingUser = await User.findOne({
+      $or: [{ username }, { email }],
     });
 
-    await newUser.save();
-    res.status(201).json({ message: "User registered successfully!" });
+    if (existingUser) {
+      return res.status(400).json({ message: "Username or email already in use." });
+    }
+
+    res.status(200).json({ available: true, message: "Username and email are available." });
   } catch (err) {
-    console.error("Error during registration:", err);
-    res.status(500).json({ message: "Error registering user.", error: err });
+    console.error("Error checking availability:", err);
+    res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
 
-// Login a user
+// Register a new user
+export const registerUser = async (req, res) => {
+  upload.single("profileImage")(req, res, async (err) => {
+    if (err) {
+      return res.status(400).json({ message: err.message });
+    }
+
+    const { username, email, name, college, password, confirmPassword } = req.body;
+    let profileImage = "";
+
+    // If the profile image is uploaded, upload it to Cloudinary
+    if (req.file) {
+      try {
+        // Upload the image to Cloudinary
+        const result = await cloudinary.uploader.upload(req.file.path);
+        profileImage = result.secure_url;  // The URL of the uploaded image
+      } catch (cloudinaryError) {
+        return res.status(500).json({ message: "Error uploading image to Cloudinary", error: cloudinaryError });
+      }
+    }
+
+    try {
+      // Validate input
+      if (!username || !email || !name || !college || !password || !confirmPassword) {
+        return res.status(400).json({ message: "All fields are required." });
+      }
+
+      if (password !== confirmPassword) {
+        return res.status(400).json({ message: "Passwords do not match." });
+      }
+
+      // Check if username or email already exists
+      const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+      if (existingUser) {
+        return res.status(400).json({ message: "Email or username already in use." });
+      }
+
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Create and save the user
+      const newUser = new User({
+        username,
+        email,
+        name,
+        college,
+        profileImage, // Save Cloudinary URL
+        password: hashedPassword,
+      });
+
+      await newUser.save();
+
+      res.status(201).json({ message: "User registered successfully!" });
+    } catch (err) {
+      console.error("Error during registration:", err);
+      res.status(500).json({ message: "Error registering user.", error: err });
+    }
+  });
+};
+
+
+// Get user profile (excluding sensitive data)
+export const getUserProfile = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    // Fetch user details (exclude password & token for security)
+    const user = await User.findById(userId)
+      .select("-password -token")
+      .lean(); // Optimize for performance
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// Get user contributions (Books, Notes, PYQs)
+export const getUserContributions = async (req, res) => {
+  const { id } = req.params;
+  try {
+    // Fetch contributions, limiting unnecessary fields
+    const books = await Books.find({ contributor: id }).select("title author subject link createdAt").lean();
+    const notes = await Notes.find({ contributor: id }).select("courseTitle courseCode facultyName link year createdAt").lean();
+    const pyqs = await PYQs.find({ contributor: id }).select("courseTitle courseCode facultyName term link createdAt").lean();
+
+    // Combine all contributions
+    const contributions = [...books, ...notes, ...pyqs];
+
+    res.status(200).json(contributions);
+  } catch (error) {
+    console.error("Error fetching contributions:", error);
+    res.status(500).json({ message: "Error fetching contributions", error: error.message });
+  }
+};
+
+// new register
+// export const registerUser = async (req, res) => {
+//   upload.single("profileImage")(req, res, async (err) => {
+//     if (err) {
+//       return res.status(400).json({ message: err.message });
+//     }
+
+//     const { username, email, name, college, password, confirmPassword, phone } = req.body;
+//     const profileImage = req.file ? req.file.filename : "";
+//     console.log(req.file);
+//     console.log(req.body);
+    
+    
+//     try {
+//       //Validate input fields
+//       if (!username || !email || !name || !college || !password || !confirmPassword || !phone) {
+//         return res.status(400).json({ message: "All fields are required." });
+//       }
+
+//       if (password !== confirmPassword) {
+//         return res.status(400).json({ message: "Passwords do not match." });
+//       }
+
+//       //Check if email or username is already taken
+//       const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+//       if (existingUser) {
+//         return res.status(400).json({ message: "Email or username already in use." });
+//       }
+
+//       const result = await uploadOnCloudinary(req.file?.path);
+//       console.log(result);
+      
+
+//       //Hash the password securely
+//       const hashedPassword = await bcrypt.hash(password, 10);
+
+//       //Create new user instance
+//       const newUser = new User({
+//         username,
+//         email,
+//         name,
+//         college,
+//         profileImage: result?.url || '',
+//         phone,
+//         password: hashedPassword,
+//       });
+
+//       //Save user to database
+//       const newSavedUser = await newUser.save();
+//         console.log(newSavedUser);
+        
+//       res.status(201).json({ message: "User registered successfully!" });
+//     } catch (error) {
+//       console.error("Error during registration:", error);
+//       res.status(500).json({ message: "Error registering user.", error });
+//     }
+//   });
+// };
+
+
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -62,8 +219,8 @@ export const loginUser = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "24h" }
     );
-
-    res.json({ message: "Login successful!", token, username: user.username });
+    console.log("Login successful!", user._id);
+    res.json({ message: "Login successful!", token, username: user.username, userId: user._id });
   } catch (err) {
     console.error("Error during login:", err);
     res.status(500).json({ message: "Error logging in.", error: err });

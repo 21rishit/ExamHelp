@@ -1,5 +1,6 @@
 import { Books } from "../models/booksModel.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import User from "../models/userModel.js";
 
 const createBooks = async (req, res) => {
   try {
@@ -8,7 +9,8 @@ const createBooks = async (req, res) => {
 
 
     // Destructuring
-    const { title, author, publishYear, subject } = req.body;
+    const { title, author, publishYear, subject,contributor} = req.body;
+    // const contributor = req.user._id;
 
     if (!title || !author || !publishYear || !subject) {
       return res.status(400).send({ message: "one or more fields missing!" });
@@ -33,11 +35,16 @@ const createBooks = async (req, res) => {
       publishYear: publishYear,
       subject: subject,
       link: url,
+      contributor,
     };
 
-    const books = await Books.create(newBooks);
-    console.log(books);
-    return res.status(201).send(books);
+    const book = await Books.create(newBooks);
+    console.log(book);
+    const user = await User.findById(contributor);
+    console.log(user);
+    user.contributions.books.push(book._id);
+    await user.save();
+    return res.status(201).send(book);
   } catch (error) {
     console.log(error.message);
     res.status(500).send(error.message);
@@ -56,13 +63,3 @@ const fetchAllBooks = async (req, res) => {
 };
 
 export { createBooks, fetchAllBooks };
-
-// word - req.body
-// Books - .find({courseTitle: word || courseCode: word || facultyName: word || term: word || academicYear: word})
-// Notes - .find({contributor: word || courseTitle: word || courseCode: word || facultyName: word || academicYear: word})
-// PYQs - .find({courseTitle: word || courseCode: word || facultyName: word || term: word || academicYear: word})
-
-// or else do manually
-// books = Books.find();
-// no
-// books = Books.find({title: word || author: word || publishYear: word || subject: word})

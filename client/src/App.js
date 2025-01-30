@@ -11,10 +11,11 @@ import Login from './components/Login';
 import Register from './components/Register';
 import ProtectedPage from './components/ProtectedPage';
 import { useEffect } from 'react';
+import Profile from './pages/Profile';
 
 
 function App() {
-  const token = localStorage.getItem("authToken");
+  // const token = localStorage.getItem("authToken");
   useEffect(() => {
     // api call agar toekn hai toh, check its validity, if yes, ok, if not, remove, username remove
   })
@@ -31,6 +32,7 @@ function App() {
           <Route path="/Contribute" element={<Contribute />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
           {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
           <Route path="/protected" element={<ProtectedPage />} />
         </Routes>

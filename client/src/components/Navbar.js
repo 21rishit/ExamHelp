@@ -120,7 +120,7 @@ function Navbar() {
                       height="40"
                     />
                     {/* User Greeting */}
-                    <span className="text-dark">Hi, {userName}</span>
+                    <span className="text-dark">Hi, {storedUserName}</span>
                   </button>
                   <ul
                     className="dropdown-menu dropdown-menu-end"

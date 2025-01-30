@@ -4,11 +4,10 @@ import { useNavigate } from 'react-router-dom';
 const Filetypenotes = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    contributor: '',
     courseTitle: '',
     courseCode: '',
     facultyName: '',
-    academicYear: '',
+    year: '',
     file: null,
   });
 
@@ -25,12 +24,13 @@ const Filetypenotes = () => {
     e.preventDefault();
 
     const data = new FormData();
-    data.append('contributor', formData.contributor);
+    // data.append('contributor', formData.contributor);
     data.append('courseTitle', formData.courseTitle);
     data.append('courseCode', formData.courseCode);
     data.append('facultyName', formData.facultyName);
-    data.append('academicYear', formData.academicYear);
+    data.append('year', formData.year);
     data.append('file', formData.file);
+    data.append('contributor', localStorage.getItem('userId'));
 
     try {
       const response = await fetch('http://localhost:5000/notes/upload', {
@@ -42,11 +42,10 @@ const Filetypenotes = () => {
       if (response.ok) {
         alert('Notes submitted successfully!');
         setFormData({
-          contributor: '',
           courseTitle: '',
           courseCode: '',
           facultyName: '',
-          academicYear: '',
+          year: '',
           file: null,
         });
         navigate('/Notes');
@@ -65,25 +64,7 @@ const Filetypenotes = () => {
         <div className="row justify-content-center my-5">
           <div className="col-lg-6">
             <form onSubmit={handleSubmit}>
-
-              <label htmlFor="contributor" className="form-label">
-                Contributor:
-              </label>
-              <div className="mb-4 input-group">
-                <span className="input-group-text">
-                  <i className="bi bi-person-fill"></i>
-                </span>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="contributor"
-                  name="contributor"
-                  placeholder="e.g. John doe"
-                  value={formData.contributor}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+              {/* <h2 className="text-center mb-4">Contribute Notes</h2> */}
 
               <label htmlFor="courseTitle" className="form-label">
                 Course Title:
@@ -176,7 +157,7 @@ const Filetypenotes = () => {
                 </div>
               </div> */}
 
-              <label htmlFor="academicYear" className="form-label">
+              <label htmlFor="year" className="form-label">
                 Academic Year:
               </label>
               <div className="input-group mb-4">
@@ -185,9 +166,9 @@ const Filetypenotes = () => {
                 </span>
                 <select
                   className="form-select"
-                  id="academicYear"
-                  name="academicYear"
-                  value={formData.academicYear}
+                  id="year"
+                  name="year"
+                  value={formData.year}
                   onChange={handleChange}
                   required
                 >

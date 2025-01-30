@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { faFileArrowDown } from "@fortawesome/free-solid-svg-icons";
 
-const Card = ({courseTitle, courseCode, facultyName, term, academicYear, link, contributor, title, publishYear, subject, author}) => {
+const Card = ({courseTitle, courseCode, facultyName, term, academicYear, link, contributor, title, publishYear, subject, author, year}) => {
   return ( 
     <div className="row justify-content-center">
       <div className="col-lg-8">
@@ -25,7 +25,7 @@ const Card = ({courseTitle, courseCode, facultyName, term, academicYear, link, c
             <div className="container">
               <h6>{facultyName}</h6>
               <h6>{term}</h6>
-              <h6>{academicYear}</h6>
+              <h6>{academicYear}{year}</h6>
               <h6>{contributor}</h6>
               <h6>{subject}</h6>
               <h6>{author}</h6>
