@@ -27,7 +27,14 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // Middleware
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
-app.use(cors({ origin: ["http://localhost:3000", "https://examhelp.vercel.app"] })); // Allow requests from frontend
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://examhelp.vercel.app"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // Include this if you are dealing with authentication (cookies, sessions, etc.)
+  })
+);
 // CORS - Cross Origin Resource Sharing
 
 // Test route
