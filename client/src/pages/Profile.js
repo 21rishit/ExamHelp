@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "../styles/profile.css"; 
+import "../styles/profile.css";
 import "../styles/profileShimmer.css"; // Import shimmer effect styles
 
 const Profile = () => {
@@ -23,13 +23,13 @@ const Profile = () => {
         }
 
         const userResponse = await axios.get(
-          `http://localhost:5000/auth/profile/${userId}`,
+          `${process.env.REACT_APP_BACKEND_URL}/auth/profile/${userId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setUser(userResponse.data);
 
         const contributionsResponse = await axios.get(
-          `http://localhost:5000/auth/contributions/${userId}`,
+          `${process.env.REACT_APP_BACKEND_URL}/auth/contributions/${userId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setContributions(contributionsResponse.data);
@@ -77,15 +77,27 @@ const Profile = () => {
                   src={user.profileImage || "/default-profile.png"}
                   alt="Profile"
                   className="rounded-circle border border-secondary"
-                  style={{ width: "120px", height: "120px", objectFit: "cover" }}
+                  style={{
+                    width: "120px",
+                    height: "120px",
+                    objectFit: "cover",
+                  }}
                 />
               </div>
               <div className="card-body text-center">
                 <h5 className="card-title">{user.name}</h5>
-                <p className="card-text"><strong>Username:</strong>@{user.username}</p>
-                <p className="card-text"><strong>Email:</strong> {user.email}</p>
-                <p className="card-text"><strong>Phone:</strong> {user.phone}</p>
-                <p className="card-text"><strong>College:</strong> {user.college}</p>
+                <p className="card-text">
+                  <strong>Username:</strong>@{user.username}
+                </p>
+                <p className="card-text">
+                  <strong>Email:</strong> {user.email}
+                </p>
+                <p className="card-text">
+                  <strong>Phone:</strong> {user.phone}
+                </p>
+                <p className="card-text">
+                  <strong>College:</strong> {user.college}
+                </p>
               </div>
             </div>
           )}
@@ -98,22 +110,37 @@ const Profile = () => {
             {/* Tabs for PYQs, Notes, Books, Downloads */}
             <ul className="nav nav-pills justify-content-center">
               <li className="nav-item">
-                <button className={`nav-link ${activeTab === "pyqs" ? "active" : ""}`} onClick={() => setActiveTab("pyqs")}>
+                <button
+                  className={`nav-link ${activeTab === "pyqs" ? "active" : ""}`}
+                  onClick={() => setActiveTab("pyqs")}
+                >
                   PYQs
                 </button>
               </li>
               <li className="nav-item">
-                <button className={`nav-link ${activeTab === "notes" ? "active" : ""}`} onClick={() => setActiveTab("notes")}>
+                <button
+                  className={`nav-link ${
+                    activeTab === "notes" ? "active" : ""
+                  }`}
+                  onClick={() => setActiveTab("notes")}
+                >
                   Notes
                 </button>
               </li>
               <li className="nav-item">
-                <button className={`nav-link ${activeTab === "books" ? "active" : ""}`} onClick={() => setActiveTab("books")}>
+                <button
+                  className={`nav-link ${
+                    activeTab === "books" ? "active" : ""
+                  }`}
+                  onClick={() => setActiveTab("books")}
+                >
                   Books
                 </button>
               </li>
               <li className="nav-item">
-                <button className="nav-link disabled">Downloads (Coming Soon)</button>
+                <button className="nav-link disabled">
+                  Downloads (Coming Soon)
+                </button>
               </li>
             </ul>
           </div>
@@ -132,9 +159,16 @@ const Profile = () => {
                 <div className="col-md-4 mb-2" key={item._id}>
                   <div className="card shadow-sm">
                     <div className="card-body text-center">
-                      <h6 className="fw-bold">{item.title || item.courseTitle}</h6>
+                      <h6 className="fw-bold">
+                        {item.title || item.courseTitle}
+                      </h6>
                       <p className="small">{item.subject || item.courseCode}</p>
-                      <a href={item.link} className="btn btn-outline-primary btn-sm" target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={item.link}
+                        className="btn btn-outline-primary btn-sm"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         View
                       </a>
                     </div>
@@ -142,7 +176,9 @@ const Profile = () => {
                 </div>
               ))
             ) : (
-              <p className="text-center text-muted mt-3">No contributions yet in this section.</p>
+              <p className="text-center text-muted mt-3">
+                No contributions yet in this section.
+              </p>
             )}
           </div>
         </div>

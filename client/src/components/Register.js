@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1); // Registration step
   const [formData, setFormData] = useState({
     username: "",
@@ -34,10 +35,13 @@ const Register = () => {
     setMessageType("info");
 
     try {
-      const response = await axios.post("http://localhost:5000/auth/check-availability", {
-        username: formData.username,
-        email: formData.email,
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/auth/check-availability`,
+        {
+          username: formData.username,
+          email: formData.email,
+        }
+      );
 
       setMessage(response.data.message);
       setMessageType("success");
@@ -62,20 +66,25 @@ const Register = () => {
     // Prepare data for submission
     const userData = new FormData();
     Object.keys(formData).forEach((key) => {
-      userData.append(key, formData[key]);  // Append profileImage if it exists
+      userData.append(key, formData[key]); // Append profileImage if it exists
     });
 
     try {
       setMessage("Registering account...");
       setMessageType("info");
 
-      const response = await axios.post("http://localhost:5000/auth/register", userData, {
-        headers: { "Content-Type": "multipart/form-data" },  // Important for file upload
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/auth/register`,
+        userData,
+        {
+          headers: { "Content-Type": "multipart/form-data" }, // Important for file upload
+        }
+      );
 
       setMessage(response.data.message);
       setMessageType("success");
       setStep(3); // Move to the final step (optional: redirect to login)
+      navigate("/login");
     } catch (error) {
       setMessage(error.response?.data?.message || "Something went wrong.");
       setMessageType("error");
@@ -84,17 +93,24 @@ const Register = () => {
 
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
-      <div className="p-4 shadow-lg" style={{ maxWidth: "400px", width: "100%" }}>
+      <div
+        className="p-4 shadow-lg"
+        style={{ maxWidth: "400px", width: "100%" }}
+      >
         <div className="text-center">
           <h1 className="fw-bold mb-3">eXAMhELP</h1>
-          <p className="text-muted">{step === 1 ? "Check availability" : "Create your account"}</p>
+          <p className="text-muted">
+            {step === 1 ? "Check availability" : "Create your account"}
+          </p>
         </div>
 
         {step === 1 ? (
           // Check username & email availability
           <form onSubmit={handleCheckAvailability}>
             <div className="mb-3">
-              <label htmlFor="username" className="form-label">Username</label>
+              <label htmlFor="username" className="form-label">
+                Username
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -107,7 +123,9 @@ const Register = () => {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="email" className="form-label">Email</label>
+              <label htmlFor="email" className="form-label">
+                Email
+              </label>
               <input
                 type="email"
                 className="form-control"
@@ -119,14 +137,17 @@ const Register = () => {
                 required
               />
             </div>
-            <button type="submit" className="btn btn-primary w-100">Next</button>
+            <button type="submit" className="btn btn-primary w-100">
+              Next
+            </button>
           </form>
         ) : (
           // Enter additional details
           <form onSubmit={handleSubmit}>
-            
             <div className="mb-3">
-              <label htmlFor="name" className="form-label">Full Name</label>
+              <label htmlFor="name" className="form-label">
+                Full Name
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -140,7 +161,9 @@ const Register = () => {
             </div>
 
             <div className="mb-3">
-              <label htmlFor="college" className="form-label">College</label>
+              <label htmlFor="college" className="form-label">
+                College
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -152,9 +175,11 @@ const Register = () => {
                 required
               />
             </div>
-            
+
             <div className="mb-3">
-              <label htmlFor="phone" className="form-label">Phone No.</label>
+              <label htmlFor="phone" className="form-label">
+                Phone No.
+              </label>
               <input
                 type="text"
                 className="form-control"
@@ -168,7 +193,9 @@ const Register = () => {
             </div>
 
             <div className="mb-3">
-              <label htmlFor="profileImage" className="form-label">Profile Image</label>
+              <label htmlFor="profileImage" className="form-label">
+                Profile Image
+              </label>
               <input
                 type="file"
                 className="form-control"
@@ -180,7 +207,9 @@ const Register = () => {
             </div>
 
             <div className="mb-3">
-              <label htmlFor="password" className="form-label">Password</label>
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
               <input
                 type="password"
                 className="form-control"
@@ -194,7 +223,9 @@ const Register = () => {
             </div>
 
             <div className="mb-3">
-              <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
+              <label htmlFor="confirmPassword" className="form-label">
+                Confirm Password
+              </label>
               <input
                 type="password"
                 className="form-control"
@@ -207,13 +238,23 @@ const Register = () => {
               />
             </div>
 
-            <button type="submit" className="btn btn-primary w-100">Register</button>
+            <button type="submit" className="btn btn-primary w-100">
+              Register
+            </button>
           </form>
         )}
 
         {/* Feedback message */}
         {message && (
-          <p className={`mt-3 text-${messageType === "success" ? "success" : messageType === "error" ? "danger" : "info"}`}>
+          <p
+            className={`mt-3 text-${
+              messageType === "success"
+                ? "success"
+                : messageType === "error"
+                ? "danger"
+                : "info"
+            }`}
+          >
             {message}
           </p>
         )}
@@ -221,7 +262,9 @@ const Register = () => {
         {step === 1 && (
           <div className="text-center mt-3">
             <p className="mb-0">Already have an account?</p>
-            <Link to="/login" className="btn btn-outline-secondary mt-2 w-100">Login</Link>
+            <Link to="/login" className="btn btn-outline-secondary mt-2 w-100">
+              Login
+            </Link>
           </div>
         )}
       </div>

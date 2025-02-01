@@ -11,11 +11,16 @@ tooltips.forEach((tooltip) => {
 
 export default function Home() {
   return (
-    <section id="home" className=" mt-4" style={{ padding: "60px 0px", backgroundColor: "rgb(240, 238, 238)" }}>
+    <section
+      id="home"
+      className=" mt-4"
+      style={{ padding: "60px 0px", backgroundColor: "rgb(240, 238, 238)" }}
+    >
       <div className="container-lg">
         <div className="text-center">
           <h2>
-            <i className="bi bi-info-circle-fill d-none d-md-inline"></i>eXAMhELP
+            <i className="bi bi-info-circle-fill d-none d-md-inline"></i>
+            eXAMhELP
           </h2>
           <p className="lead text-muted">
             Your Last Minute Solution..
@@ -33,7 +38,12 @@ export default function Home() {
                   amet deserunt laborum. Odit ea ut voluptas amet quasi facilis
                   ipsa.
                 </p>
-                <Link to="/Notes" className="btn btn-outline-danger btn-md mt-3">View</Link>
+                <Link
+                  to="/Notes"
+                  className="btn btn-outline-danger btn-md mt-3"
+                >
+                  View
+                </Link>
               </div>
             </div>
           </div>
@@ -48,7 +58,9 @@ export default function Home() {
                   sit, quos earum sapiente sequi impedit molestias voluptates
                   nobis quisquam.
                 </p>
-                <Link to="/PYQs" className="btn btn-outline-danger btn-md mt-3">View</Link>
+                <Link to="/PYQs" className="btn btn-outline-danger btn-md mt-3">
+                  View
+                </Link>
               </div>
             </div>
           </div>
@@ -62,7 +74,12 @@ export default function Home() {
                   amet deserunt laborum. Odit ea ut voluptas amet quasi facilis
                   ipsa.
                 </p>
-                <Link to="/books" className="btn btn-outline-danger btn-md mt-3">View</Link>
+                <Link
+                  to="/books"
+                  className="btn btn-outline-danger btn-md mt-3"
+                >
+                  View
+                </Link>
               </div>
             </div>
           </div>

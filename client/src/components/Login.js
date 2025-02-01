@@ -8,7 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState(""); // Feedback message
   const [messageType, setMessageType] = useState(""); // Message type (success/error/info)
-  const navigate =useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +26,7 @@ const Login = () => {
       setMessageType("info"); // Blue info message
 
       // Send the login request to the backend
-      const response = await axios.post("http://localhost:5000/auth/login", {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, {
         email,
         password,
       });
@@ -39,7 +39,7 @@ const Login = () => {
       localStorage.setItem("authToken", response.data.token);
       localStorage.setItem("userName", response.data.username);
       localStorage.setItem("userId", response.data.userId);
-      navigate("/")
+      navigate("/");
     } catch (error) {
       // Handle errors (invalid credentials, server errors, etc.)
       if (error.response && error.response.data) {
@@ -54,14 +54,19 @@ const Login = () => {
 
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
-      <div className="p-4 shadow-lg" style={{ maxWidth: "400px", width: "100%" }}>
+      <div
+        className="p-4 shadow-lg"
+        style={{ maxWidth: "400px", width: "100%" }}
+      >
         <div className="text-center">
           <h1 className="fw-bold mb-3">eXAMhELP</h1>
           <p className="text-muted">Sign in to continue</p>
         </div>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="email" className="form-label">Email</label>
+            <label htmlFor="email" className="form-label">
+              Email
+            </label>
             <input
               type="email"
               className="form-control"
@@ -73,7 +78,9 @@ const Login = () => {
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="password" className="form-label">Password</label>
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
             <input
               type="password"
               className="form-control"
@@ -84,7 +91,9 @@ const Login = () => {
               required
             />
           </div>
-          <button type="submit" className="btn btn-primary w-100">Login</button>
+          <button type="submit" className="btn btn-primary w-100">
+            Login
+          </button>
         </form>
 
         {/* Display the feedback message */}

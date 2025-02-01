@@ -8,7 +8,7 @@ function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userName, setUserName] = useState("User"); // For dynamic user greeting
+  // const [userName, setUserName] = useState("User"); // For dynamic user greeting
   const token = localStorage.getItem("authToken");
   const storedUserName = localStorage.getItem("userName");
 
@@ -73,7 +73,11 @@ function Navbar() {
           </ul>
 
           {/* Middle Section - Search Bar */}
-          <form className="d-flex mx-auto" role="search" onSubmit={handleSearch}>
+          <form
+            className="d-flex mx-auto"
+            role="search"
+            onSubmit={handleSearch}
+          >
             <input
               className="form-control"
               type="search"
@@ -89,10 +93,16 @@ function Navbar() {
             {!isLoggedIn ? (
               <>
                 {/* Show Login/Register when NOT logged in */}
-                <Link to="/login" className="btn btn-sm btn-light fw-semibold me-2">
+                <Link
+                  to="/login"
+                  className="btn btn-sm btn-light fw-semibold me-2"
+                >
                   Login
                 </Link>
-                <Link to="/register" className="btn btn-sm btn-warning fw-semibold">
+                <Link
+                  to="/register"
+                  className="btn btn-sm btn-warning fw-semibold"
+                >
                   Register
                 </Link>
               </>
@@ -100,7 +110,10 @@ function Navbar() {
               <>
                 {/* Show User Greeting and Dropdown when logged in */}
                 {/* Contribute Button */}
-                <Link to="/Contribute" className="btn btn-md btn-warning fw-bold me-3">
+                <Link
+                  to="/Contribute"
+                  className="btn btn-md btn-warning fw-bold me-3"
+                >
                   Contribute
                 </Link>
                 <div className="dropdown">

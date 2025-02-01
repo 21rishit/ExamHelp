@@ -34,7 +34,7 @@ const Filetypepyqs = () => {
     data.append('contributor', localStorage.getItem('userId'));
 
     try {
-      const response = await fetch('http://localhost:5000/pyqs/upload', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/books/upload`, {
         method: 'POST',
         body: data,
       });

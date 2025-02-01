@@ -11,7 +11,9 @@ const Books = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await fetch("http://localhost:5000/books");
+        const response = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/books`
+        );
         const data = await response.json();
         setBooks(data); // Store fetched books
         setLoading(false); // Stop the loading state

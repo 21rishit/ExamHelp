@@ -11,7 +11,9 @@ const PYQs = () => {
   useEffect(() => {
     const fetchPYQs = async () => {
       try {
-        const response = await fetch("http://localhost:5000/pyqs");
+        const response = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/pyqs`
+        );
         const data = await response.json();
         console.log(data);
         setPyqs(data); // Store fetched PYQs
@@ -28,15 +30,14 @@ const PYQs = () => {
   // Filter PYQs based on the search query across all fields
   const filteredPYQs = pyqs.filter((pyq) =>
     [
-      "courseTitle", 
-      "courseCode", 
-      "facultyName", 
-      "term", 
+      "courseTitle",
+      "courseCode",
+      "facultyName",
+      "term",
       "academicYear",
       "contributor",
-    ].some(
-      (key) =>
-        pyq[key]?.toString().toLowerCase().includes(searchQuery.toLowerCase())
+    ].some((key) =>
+      pyq[key]?.toString().toLowerCase().includes(searchQuery.toLowerCase())
     )
   );
 

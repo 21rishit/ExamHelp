@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Filetypebooks = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    title: '',
-    author: '',
-    subject: '',
-    publishYear: '',
+    title: "",
+    author: "",
+    subject: "",
+    publishYear: "",
     file: null,
   });
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'file') {
+    if (name === "file") {
       setFormData({ ...formData, file: files[0] });
     } else {
       setFormData({ ...formData, [name]: value });
@@ -24,46 +24,49 @@ const Filetypebooks = () => {
     e.preventDefault();
 
     const data = new FormData();
-    data.append('title', formData.title);
-    data.append('author', formData.author);
-    data.append('subject', formData.subject);
-    data.append('publishYear', formData.publishYear);
-    data.append('file', formData.file);
-    data.append('contributor', localStorage.getItem('userId'));
+    data.append("title", formData.title);
+    data.append("author", formData.author);
+    data.append("subject", formData.subject);
+    data.append("publishYear", formData.publishYear);
+    data.append("file", formData.file);
+    data.append("contributor", localStorage.getItem("userId"));
 
     try {
-      const response = await fetch('http://localhost:5000/books/upload', {
-        method: 'POST',
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/books/upload`, {
+        method: "POST",
         body: data,
       });
 
       console.log(response);
       if (response.ok) {
-        alert('Book submitted successfully!');
+        alert("Book submitted successfully!");
         setFormData({
-          title: '',
-          author: '',
-          subject: '',
-          publishYear: '',
+          title: "",
+          author: "",
+          subject: "",
+          publishYear: "",
           file: null,
         });
-        navigate('/Books');
+        navigate("/Books");
       } else {
-        alert('Failed to submit Book. Please try again.');
+        alert("Failed to submit Book. Please try again.");
       }
     } catch (error) {
-      console.error('Error submitting Book:', error);
-      alert('An error occurred. Please try again later.');
+      console.error("Error submitting Book:", error);
+      alert("An error occurred. Please try again later.");
     }
   };
 
   return (
-    <section id="contribute" className="bg-light mt-4" style={{ backgroundColor: "rgb(240, 238, 238)" }}>
+    <section
+      id="contribute"
+      className="bg-light mt-4"
+      style={{ backgroundColor: "rgb(240, 238, 238)" }}
+    >
       <div className="container-lg">
         <div className="row justify-content-center my-5">
           <div className="col-lg-6">
             <form onSubmit={handleSubmit}>
-
               <label htmlFor="title" className="form-label">
                 Book Title:
               </label>
@@ -155,7 +158,11 @@ const Filetypebooks = () => {
               </div>
 
               <div className="mb-4 text-center">
-                <button type="submit" className="btn btn-warning" onClick={handleSubmit}>
+                <button
+                  type="submit"
+                  className="btn btn-warning"
+                  onClick={handleSubmit}
+                >
                   Submit <i className="bi bi-send-fill"></i>
                 </button>
               </div>
@@ -168,4 +175,3 @@ const Filetypebooks = () => {
 };
 
 export default Filetypebooks;
-

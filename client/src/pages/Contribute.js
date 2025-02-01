@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import FileTypePYQs from "../components/FileTypePYQs";
 import FileTypeNotes from "../components/FileTypeNotes";
 import FileTypeBooks from "../components/FileTypeBooks";
@@ -11,11 +11,16 @@ export default function Contribute() {
   };
 
   return (
-    <section id="contribute" className="bg-light mt-4" style={{ backgroundColor: "rgb(240, 238, 238)" }}>
+    <section
+      id="contribute"
+      className="bg-light mt-4"
+      style={{ backgroundColor: "rgb(240, 238, 238)" }}
+    >
       <div className="container-lg">
         <div className="text-center">
           <h2>
-            <i className="bi bi-hand-index-thumb-fill"></i>Contribute Us & Help Your Friends..
+            <i className="bi bi-hand-index-thumb-fill"></i>Contribute Us & Help
+            Your Friends..
           </h2>
           <p className="lead text-muted">
             Upload your Question Papers, Handwritten Notes & Reference Books
@@ -32,7 +37,13 @@ export default function Contribute() {
                 <span className="input-group-text">
                   <i className="bi bi-question-circle-fill"></i>
                 </span>
-                <select className="form-select" aria-label="Default select example" id="subject" value={fileType} onChange={handleFileTypeChange}>
+                <select
+                  className="form-select"
+                  aria-label="Default select example"
+                  id="subject"
+                  value={fileType}
+                  onChange={handleFileTypeChange}
+                >
                   <option value="">Select the file type</option>
                   <option value="Notes">Notes</option>
                   <option value="PYQs">PYQ's</option>

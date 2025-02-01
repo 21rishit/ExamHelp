@@ -10,8 +10,8 @@ export default function Cards() {
       <div className="container-lg">
         <div className="text-center">
           <h2>
-            <i className="bi bi-info-circle-fill d-none d-md-inline"></i> Reference
-            Books
+            <i className="bi bi-info-circle-fill d-none d-md-inline"></i>{" "}
+            Reference Books
           </h2>
           <p className="lead text-muted">Lorem ipsum dolor sit amet.</p>
         </div>

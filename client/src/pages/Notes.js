@@ -11,7 +11,9 @@ const Notes = () => {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const response = await fetch("http://localhost:5000/notes");
+        const response = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/notes`
+        );
         const data = await response.json();
         setNotes(data); // Store fetched notes
         setLoading(false); // Stop the loading state
