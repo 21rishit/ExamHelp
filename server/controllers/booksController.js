@@ -25,7 +25,7 @@ const createBooks = async (req, res) => {
     // Upload the new notes file to Cloudinary
     console.log(file);
     const fileUpload = await uploadOnCloudinary(file.path);
-    const url = fileUpload.url;
+    const url = fileUpload?.secure_url || "";
 
     console.log(url);
 

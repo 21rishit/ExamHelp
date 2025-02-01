@@ -30,6 +30,7 @@ const Notes = () => {
       "courseTitle",
       "courseCode",
       "facultyName",
+      "term",
       "year",
       "contributor",
     ].some((key) =>
@@ -70,6 +71,7 @@ const Notes = () => {
                   courseTitle={note.courseTitle}
                   courseCode={note.courseCode}
                   facultyName={note.facultyName}
+                  term={note.term}
                   year={note.year}
                   contributor={note.contributor}
                   link={note.link}

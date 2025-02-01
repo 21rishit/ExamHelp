@@ -1,26 +1,38 @@
-import { v2 as cloudinary } from "cloudinary"
-import fs from "fs"
+import { v2 as cloudinary } from "cloudinary";
+import fs from "fs/promises"; // Use promise-based fs for async operations
 
 const uploadOnCloudinary = async (localFilePath) => {
-    try {
-        if (!localFilePath) return ""
-        
-        //upload the file on cloudinary
-        const response = await cloudinary.uploader.upload(localFilePath, {
-            resource_type: "auto"
-        })
-        
-        // file has been uploaded successfully
-        // console.log(response)
-        console.log("file is uploaded on cloudinary ", response.url);
-        
-        // helps in deleting the locally saved file after uploading it on cloud
-        fs.unlinkSync(localFilePath)
-        return response;
-    } catch (error) {
-        fs.unlinkSync(localFilePath) // remove the locally saved temporary file as the upload operation got failed
-        return null;
+  try {
+    if (!localFilePath) {
+      console.error("❌ No file path provided for Cloudinary upload.");
+      return null;
     }
-}
 
-export { uploadOnCloudinary }
+    // Upload the file to Cloudinary
+    const response = await cloudinary.uploader.upload(localFilePath, {
+      resource_type: "auto",
+    //   folder: "examhelp_uploads", // Organize uploads in a folder (optional)
+    });
+
+    console.log("✅ File uploaded to Cloudinary:", response.secure_url);
+
+    // Remove the local file after successful upload
+    await fs.unlink(localFilePath);
+    
+    return response; // Return only the URL for simplicity    
+    // why why why response.secure_url
+  } catch (error) {
+    console.error("❌ Cloudinary upload failed:", error.message);
+
+    // Ensure the local file is deleted even if upload fails
+    try {
+      await fs.unlink(localFilePath);
+    } catch (unlinkError) {
+      console.error("⚠️ Error deleting temp file:", unlinkError.message);
+    }
+
+    return null;
+  }
+};
+
+export { uploadOnCloudinary };

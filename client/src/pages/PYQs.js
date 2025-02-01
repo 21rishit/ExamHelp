@@ -27,7 +27,14 @@ const PYQs = () => {
 
   // Filter PYQs based on the search query across all fields
   const filteredPYQs = pyqs.filter((pyq) =>
-    ["courseTitle", "courseCode", "facultyName", "term", "academicYear"].some(
+    [
+      "courseTitle", 
+      "courseCode", 
+      "facultyName", 
+      "term", 
+      "academicYear",
+      "contributor",
+    ].some(
       (key) =>
         pyq[key]?.toString().toLowerCase().includes(searchQuery.toLowerCase())
     )
@@ -69,6 +76,7 @@ const PYQs = () => {
                   facultyName={pyq.facultyName}
                   term={pyq.term}
                   academicYear={pyq.academicYear}
+                  contributor={pyq.contributor}
                   link={pyq.link}
                 />
               </li>

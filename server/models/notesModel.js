@@ -19,6 +19,10 @@ const notesSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    term: {
+      type: String,
+      required: true,
+    },
     year: {
       type: Number,
       required: true,

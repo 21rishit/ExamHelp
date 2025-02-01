@@ -142,7 +142,7 @@ const Filetypebooks = () => {
 
               <div className="mb-3">
                 <label htmlFor="formFileSm" className="form-label">
-                  Upload Note (pdf or docx)
+                  Upload Book (pdf or docx)
                 </label>
                 <input
                   className="form-control form-control-sm"

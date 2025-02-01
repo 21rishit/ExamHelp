@@ -48,7 +48,7 @@ const Profile = () => {
   const filterContributions = (type) => {
     return contributions.filter((item) =>
       type === "pyqs"
-        ? item.term !== undefined
+        ? item.academicYear !== undefined
         : type === "notes"
         ? item.year !== undefined
         : type === "books"
@@ -82,8 +82,9 @@ const Profile = () => {
               </div>
               <div className="card-body text-center">
                 <h5 className="card-title">{user.name}</h5>
-                <p className="card-text"><strong>Username:</strong> {user.username}</p>
+                <p className="card-text"><strong>Username:</strong>@{user.username}</p>
                 <p className="card-text"><strong>Email:</strong> {user.email}</p>
+                <p className="card-text"><strong>Phone:</strong> {user.phone}</p>
                 <p className="card-text"><strong>College:</strong> {user.college}</p>
               </div>
             </div>
@@ -128,7 +129,7 @@ const Profile = () => {
               </div>
             ) : filterContributions(activeTab).length > 0 ? (
               filterContributions(activeTab).map((item) => (
-                <div className="col-md-4 mb-3" key={item._id}>
+                <div className="col-md-4 mb-2" key={item._id}>
                   <div className="card shadow-sm">
                     <div className="card-body text-center">
                       <h6 className="fw-bold">{item.title || item.courseTitle}</h6>

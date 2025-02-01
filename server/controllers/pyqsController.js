@@ -17,7 +17,7 @@ const createPYQs = async (req, res) => {
     const file = req.file;
     console.log(file);
     const fileUpload = await uploadOnCloudinary(file.path);
-    const url = fileUpload?.url || "";
+    const url = fileUpload?.secure_url || "";
 
     console.log(url);
 
@@ -27,8 +27,8 @@ const createPYQs = async (req, res) => {
       facultyName: facultyName,
       term: term,
       academicYear: academicYear,
-      link: url,
       contributor: contributor, 
+      link: url,
     };
 
     const pyq = await PYQs.create(newPYQs);

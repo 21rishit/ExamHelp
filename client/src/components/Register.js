@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const Register = () => {
-  const [step, setStep] = useState(1); // Step 1 (check email/username) -> Step 2 (full details)
+  const [step, setStep] = useState(1); // Registration step
   const [formData, setFormData] = useState({
     username: "",
     email: "",
+    phone: "",
     password: "",
     confirmPassword: "",
     name: "",
@@ -26,7 +27,7 @@ const Register = () => {
     }));
   };
 
-  // Step 1: Check if email and username are unique
+  // Check if email and username are unique
   const handleCheckAvailability = async (e) => {
     e.preventDefault();
     setMessage("Checking availability...");
@@ -47,7 +48,7 @@ const Register = () => {
     }
   };
 
-  // Step 2: Register user
+  // Register user
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -90,7 +91,7 @@ const Register = () => {
         </div>
 
         {step === 1 ? (
-          // Step 1: Check username & email availability
+          // Check username & email availability
           <form onSubmit={handleCheckAvailability}>
             <div className="mb-3">
               <label htmlFor="username" className="form-label">Username</label>
@@ -121,34 +122,9 @@ const Register = () => {
             <button type="submit" className="btn btn-primary w-100">Next</button>
           </form>
         ) : (
-          // Step 2: Enter additional details
+          // Enter additional details
           <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="password" className="form-label">Password</label>
-              <input
-                type="password"
-                className="form-control"
-                id="password"
-                name="password"
-                placeholder="Create a password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
-              <input
-                type="password"
-                className="form-control"
-                id="confirmPassword"
-                name="confirmPassword"
-                placeholder="Confirm your password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                required
-              />
-            </div>
+            
             <div className="mb-3">
               <label htmlFor="name" className="form-label">Full Name</label>
               <input
@@ -162,6 +138,7 @@ const Register = () => {
                 required
               />
             </div>
+
             <div className="mb-3">
               <label htmlFor="college" className="form-label">College</label>
               <input
@@ -175,6 +152,21 @@ const Register = () => {
                 required
               />
             </div>
+            
+            <div className="mb-3">
+              <label htmlFor="phone" className="form-label">Phone No.</label>
+              <input
+                type="text"
+                className="form-control"
+                id="phone"
+                name="phone"
+                placeholder="Enter your phone no."
+                value={formData.phone}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
             <div className="mb-3">
               <label htmlFor="profileImage" className="form-label">Profile Image</label>
               <input
@@ -186,6 +178,35 @@ const Register = () => {
                 onChange={handleChange}
               />
             </div>
+
+            <div className="mb-3">
+              <label htmlFor="password" className="form-label">Password</label>
+              <input
+                type="password"
+                className="form-control"
+                id="password"
+                name="password"
+                placeholder="Create a password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
+              <input
+                type="password"
+                className="form-control"
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="Confirm your password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
             <button type="submit" className="btn btn-primary w-100">Register</button>
           </form>
         )}

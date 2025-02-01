@@ -4,8 +4,6 @@ import User from "../models/userModel.js";
 import dotenv from "dotenv";
 import { upload } from "../middlewares/multerMiddleware.js"; // Import multer middleware
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
-import { v2 as cloudinary } from "cloudinary";
-
 import {Notes} from "../models/notesModel.js";
 import {Books} from "../models/booksModel.js"; 
 import {PYQs} from "../models/pyqsModel.js";
@@ -43,23 +41,12 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ message: err.message });
     }
 
-    const { username, email, name, college, password, confirmPassword } = req.body;
+    const { username, email, phone, name, college, password, confirmPassword } = req.body;
     let profileImage = "";
-
-    // If the profile image is uploaded, upload it to Cloudinary
-    if (req.file) {
-      try {
-        // Upload the image to Cloudinary
-        const result = await cloudinary.uploader.upload(req.file.path);
-        profileImage = result.secure_url;  // The URL of the uploaded image
-      } catch (cloudinaryError) {
-        return res.status(500).json({ message: "Error uploading image to Cloudinary", error: cloudinaryError });
-      }
-    }
 
     try {
       // Validate input
-      if (!username || !email || !name || !college || !password || !confirmPassword) {
+      if (!username || !email || !phone || !name || !college || !password || !confirmPassword) {
         return res.status(400).json({ message: "All fields are required." });
       }
 
@@ -73,6 +60,16 @@ export const registerUser = async (req, res) => {
         return res.status(400).json({ message: "Email or username already in use." });
       }
 
+      // If a profile image is uploaded, store it in Cloudinary
+      if (req.file) {
+        const dp = await uploadOnCloudinary(req.file.path);
+        if (dp) {
+          profileImage = dp.secure_url; // Store only the secure URL
+        } else {
+          return res.status(500).json({ message: "Error uploading image to Cloudinary" });
+        }
+      }
+
       // Hash the password
       const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -80,6 +77,7 @@ export const registerUser = async (req, res) => {
       const newUser = new User({
         username,
         email,
+        phone,
         name,
         college,
         profileImage, // Save Cloudinary URL
@@ -87,15 +85,14 @@ export const registerUser = async (req, res) => {
       });
 
       await newUser.save();
-
       res.status(201).json({ message: "User registered successfully!" });
+
     } catch (err) {
       console.error("Error during registration:", err);
       res.status(500).json({ message: "Error registering user.", error: err });
     }
   });
 };
-
 
 // Get user profile (excluding sensitive data)
 export const getUserProfile = async (req, res) => {
@@ -123,9 +120,9 @@ export const getUserContributions = async (req, res) => {
   const { id } = req.params;
   try {
     // Fetch contributions, limiting unnecessary fields
-    const books = await Books.find({ contributor: id }).select("title author subject link createdAt").lean();
-    const notes = await Notes.find({ contributor: id }).select("courseTitle courseCode facultyName link year createdAt").lean();
-    const pyqs = await PYQs.find({ contributor: id }).select("courseTitle courseCode facultyName term link createdAt").lean();
+    const books = await Books.find({ contributor: id }).select("title author publishYear subject link createdAt").lean();
+    const notes = await Notes.find({ contributor: id }).select("courseTitle courseCode facultyName term link year createdAt").lean();
+    const pyqs = await PYQs.find({ contributor: id }).select("courseTitle courseCode facultyName term link academicYear createdAt").lean();
 
     // Combine all contributions
     const contributions = [...books, ...notes, ...pyqs];
@@ -136,65 +133,6 @@ export const getUserContributions = async (req, res) => {
     res.status(500).json({ message: "Error fetching contributions", error: error.message });
   }
 };
-
-// new register
-// export const registerUser = async (req, res) => {
-//   upload.single("profileImage")(req, res, async (err) => {
-//     if (err) {
-//       return res.status(400).json({ message: err.message });
-//     }
-
-//     const { username, email, name, college, password, confirmPassword, phone } = req.body;
-//     const profileImage = req.file ? req.file.filename : "";
-//     console.log(req.file);
-//     console.log(req.body);
-    
-    
-//     try {
-//       //Validate input fields
-//       if (!username || !email || !name || !college || !password || !confirmPassword || !phone) {
-//         return res.status(400).json({ message: "All fields are required." });
-//       }
-
-//       if (password !== confirmPassword) {
-//         return res.status(400).json({ message: "Passwords do not match." });
-//       }
-
-//       //Check if email or username is already taken
-//       const existingUser = await User.findOne({ $or: [{ email }, { username }] });
-//       if (existingUser) {
-//         return res.status(400).json({ message: "Email or username already in use." });
-//       }
-
-//       const result = await uploadOnCloudinary(req.file?.path);
-//       console.log(result);
-      
-
-//       //Hash the password securely
-//       const hashedPassword = await bcrypt.hash(password, 10);
-
-//       //Create new user instance
-//       const newUser = new User({
-//         username,
-//         email,
-//         name,
-//         college,
-//         profileImage: result?.url || '',
-//         phone,
-//         password: hashedPassword,
-//       });
-
-//       //Save user to database
-//       const newSavedUser = await newUser.save();
-//         console.log(newSavedUser);
-        
-//       res.status(201).json({ message: "User registered successfully!" });
-//     } catch (error) {
-//       console.error("Error during registration:", error);
-//       res.status(500).json({ message: "Error registering user.", error });
-//     }
-//   });
-// };
 
 
 export const loginUser = async (req, res) => {

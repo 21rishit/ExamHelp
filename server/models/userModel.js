@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema(
     phone: {
       type: String,
       match: [phoneRegex, "Phone number must be exactly 10 digits."],
-      required: false, // Change to true if the phone number is mandatory
+      required: true,
     },
     contributions: {
       notes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Note" }],

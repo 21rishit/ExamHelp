@@ -7,6 +7,7 @@ const Filetypenotes = () => {
     courseTitle: '',
     courseCode: '',
     facultyName: '',
+    term: '',
     year: '',
     file: null,
   });
@@ -24,10 +25,10 @@ const Filetypenotes = () => {
     e.preventDefault();
 
     const data = new FormData();
-    // data.append('contributor', formData.contributor);
     data.append('courseTitle', formData.courseTitle);
     data.append('courseCode', formData.courseCode);
     data.append('facultyName', formData.facultyName);
+    data.append('term', formData.term);
     data.append('year', formData.year);
     data.append('file', formData.file);
     data.append('contributor', localStorage.getItem('userId'));
@@ -45,6 +46,7 @@ const Filetypenotes = () => {
           courseTitle: '',
           courseCode: '',
           facultyName: '',
+          term: '',
           year: '',
           file: null,
         });
@@ -123,7 +125,7 @@ const Filetypenotes = () => {
                 />
               </div>
 
-              {/* <div className="mb-4">
+              <div className="mb-4">
                 <label className="form-label">Choose Term:</label>
                 <div className="d-flex gap-3">
                   <div className="form-check">
@@ -155,7 +157,7 @@ const Filetypenotes = () => {
                     </label>
                   </div>
                 </div>
-              </div> */}
+              </div>
 
               <label htmlFor="year" className="form-label">
                 Academic Year:

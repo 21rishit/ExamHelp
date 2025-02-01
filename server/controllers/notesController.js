@@ -8,9 +8,9 @@ const createNotes = async (req, res) => {
       console.log("req.body:", req.body);
         
         // Destructuring
-        const {contributor, courseTitle, courseCode, facultyName, year } = req.body
+        const {courseTitle, courseCode, facultyName, term, year, contributor,  } = req.body
 
-        if (!courseTitle || !courseCode || !facultyName || !year ) {
+        if (!courseTitle || !courseCode || !facultyName || !term|| !year ) {
             return res.status(400).send({ message: "one or more fields missing!" });
         }
 
@@ -23,17 +23,17 @@ const createNotes = async (req, res) => {
         // Upload the new notes file to Cloudinary
         console.log(file);
         const fileUpload = await uploadOnCloudinary(file.path);
-        const url = fileUpload.url;
-
+        const url = fileUpload?.secure_url || "";
         console.log(url);
 
         const newNotes = {
-            contributor,
-            courseTitle: courseTitle,
-            courseCode: courseCode,
-            facultyName: facultyName,
-            year: year,
-            link: url,
+          courseTitle: courseTitle,
+          courseCode: courseCode,
+          facultyName: facultyName,
+          term: term,
+          year: year,
+          contributor,
+          link: url,
         };
 
         const note = await Notes.create(newNotes);
