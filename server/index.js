@@ -45,10 +45,9 @@ import protectedRouter from "./routes/protectedRouter.js"; // Protected routes
 // Register Routes
 app.use("/auth", authRouter); // Auth routes (login, register)
 app.use("/protected", protectedRouter); // Protected routes
-app.use("/books", booksRouter);
-app.use("/notes", notesRouter);
+app.use("/books", booksRouter); //BOOK ROUTES
+app.use("/notes", notesRouter); //note routes
 app.use("/pyqs", pyqsRouter);
-
 
 // mongoose
 //   .connect(process.env.MONGODB_URL)
